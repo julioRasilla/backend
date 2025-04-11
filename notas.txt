@@ -1,0 +1,728 @@
+   /* protected static function booted()
+    {   para poner por defecto los valores de un campo y no especificarlo en el create
+        static::creating(function ($usuario) {
+            // Si no se pasa el valor de 'activo', lo asignamos con el valor predeterminado 'true'
+            if (is_null($usuario->activo)) {
+                $usuario->activo = true;
+            }
+        });
+    }7*/
+
+    /*
+          protected $casts = [
+        'activo' => 'boolean',
+        'fecha_creacion' => 'datetime',
+        'fecha_actualizacion' => 'datetime',
+    ];
+     
+    */
+
+    <?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Usuario extends Authenticatable
+{
+    use HasApiTokens, HasFactory;
+
+    protected $table = 'usuarios'; // Nombre de la tabla en la BD
+
+
+    protected $fillable = [
+        'id_usuario_creacion' => 'id_usuario_creacion', // ¡Aquí está la clave!
+        'id_tipo_usuario' => 'id_tipo_usuario',
+        'id_perfil' => 'id_perfil',
+        'id_empleado' => 'id_empleado',
+        'id_cliente' => 'id_cliente',
+        'usuario',
+        'clave',
+        'remember_token'
+    ];
+
+    protected $hidden = ['clave', 'remember_token'];
+
+    // Definir los timestamps personalizados
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
+    
+    public $timestamps = true;
+
+    // Método para obtener la contraseña para autenticación
+    public function getAuthPassword()
+    {
+        return $this->clave;
+    }
+
+
+    //🔥 Mapeo automático camelCase -> snake_case en create()
+        public static function create(array $attributes = [])
+    {
+        $snakeAttributes = collect($attributes)->mapWithKeys(function ($value, $key) {
+            return [strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key)) => $value];
+        })->toArray();
+
+        return static::query()->create($snakeAttributes);
+    }
+
+
+/*
+        public static function create(array $attributes = [])
+        {
+            // 🔥 Mapeo manual de nombres de atributos
+            $map = [
+                'id_usuario_creacion' => 'id_usuario_creacion',
+                'id_tipo_usuario' => 'id_tipo_usuario',
+                'id_perfil' => 'id_perfil',
+                'id_empleado' => 'id_empleado',
+                'id_cliente' => 'id_cliente',
+                'fecha_creacion' => 'fecha_creacion',
+                'fecha_actualizacion' => 'fecha_actualizacion',
+                'remember_token' => 'remember_token',
+            ];
+        
+            // Mapeamos los atributos basados en el array de equivalencias
+            $snakeAttributes = collect($attributes)->mapWithKeys(function ($value, $key) use ($map) {
+                return [$map[$key] ?? $key => $value]; // Si existe en el mapa, usa el valor mapeado, si no, usa el original
+            })->toArray();
+        
+            return static::query()->create($snakeAttributes);
+        }
+        
+
+    /**
+     * 🚀 Aquí se hace la magia:
+     * Mutadores y accesores para mapear camelCase a snake_case.
+     */
+
+     public function toArray()
+     {
+         return [
+             'id' => $this->id,
+             'id_usuario_creacion' => $this->id_usuario_creacion,
+             'id_usuario_actualizacion' => $this->id_usuario_actualizacion,
+             'id_tipo_usuario' => $this->id_tipo_usuario,             
+             'id_perfil' => $this->id_perfil,
+             'id_empleado' => $this->id_empleado,
+             'id_cliente' => $this->id_cliente,
+             'usuario' => $this->usuario,
+             'activo' => $this->activo,
+             'fecha_creacion' => $this->fecha_creacion, // Cambio de fecha_creacion → fecha_creacion
+             'fecha_actualizacion' => $this->fecha_actualizacion, // Cambio de fecha_actualizacion → fecha_actualizacion             
+         ];
+     }     
+
+    public function setIdUsuarioCreacionAttribute($value)
+    {
+        $this->attributes['id_usuario_creacion'] = $value;
+    }
+
+    public function getIdUsuarioCreacionAttribute()
+    {
+        return $this->attributes['id_usuario_creacion'];
+    }
+
+    public function setIdTipoUsuarioAttribute($value)
+    {
+        $this->attributes['id_tipo_usuario'] = $value;
+    }
+
+    public function getIdTipoUsuarioAttribute()
+    {
+        return $this->attributes['id_tipo_usuario'];
+    }
+
+    public function setIdPerfilAttribute($value)
+    {
+        $this->attributes['id_perfil'] = $value;
+    }
+
+    public function getIdPerfilAttribute()
+    {
+        return $this->attributes['id_perfil'];
+    }
+
+    public function setIdEmpleadoAttribute($value)
+    {
+        $this->attributes['id_empleado'] = $value;
+    }
+
+    public function getIdEmpleadoAttribute()
+    {
+        return $this->attributes['id_empleado'];
+    }
+
+    public function setIdClienteAttribute($value)
+    {
+        $this->attributes['id_cliente'] = $value;
+    }
+
+    public function getIdClienteAttribute()
+    {
+        return $this->attributes['id_cliente'];
+    }
+}
+
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Usuario extends Authenticatable
+{
+    use HasApiTokens, HasFactory;
+
+    protected $table = 'usuarios'; // Nombre de la tabla en la BD
+
+
+    protected $fillable = [
+        'id_usuario_creacion' => 'id_usuario_creacion', // ¡Aquí está la clave!
+        'id_tipo_usuario' => 'id_tipo_usuario',
+        'id_perfil' => 'id_perfil',
+        'id_empleado' => 'id_empleado',
+        'id_cliente' => 'id_cliente',
+        'usuario',
+        'clave',
+        'remember_token'
+    ];
+
+    protected $hidden = ['clave', 'remember_token'];
+
+    // Definir los timestamps personalizados
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
+    
+    public $timestamps = true;
+
+    // Método para obtener la contraseña para autenticación
+    public function getAuthPassword()
+    {
+        return $this->clave;
+    }
+
+
+
+        public static function create(array $attributes = [])
+        {
+            // 🔥 Mapeo manual de nombres de atributos
+            $map = [
+                'id_usuario_creacion' => 'id_usuario_creacion',
+                'id_tipo_usuario' => 'id_tipo_usuario',
+                'id_perfil' => 'id_perfil',
+                'id_empleado' => 'id_empleado',
+                'id_cliente' => 'id_cliente',
+                'fecha_creacion' => 'fecha_creacion',
+                'fecha_actualizacion' => 'fecha_actualizacion',
+                'remember_token' => 'remember_token',
+            ];
+        
+            // Mapeamos los atributos basados en el array de equivalencias
+            $snakeAttributes = collect($attributes)->mapWithKeys(function ($value, $key) use ($map) {
+                return [$map[$key] ?? $key => $value]; // Si existe en el mapa, usa el valor mapeado, si no, usa el original
+            })->toArray();
+        
+            return static::query()->create($snakeAttributes);
+        }
+        
+
+    /**
+     * 🚀 Aquí se hace la magia:
+     * Mutadores y accesores para mapear camelCase a snake_case.
+     */
+
+     public function toArray()
+     {
+         return [
+             'id' => $this->id,
+             'id_usuario_creacion' => $this->id_usuario_creacion,
+             'id_usuario_actualizacion' => $this->id_usuario_actualizacion,
+             'id_tipo_usuario' => $this->id_tipo_usuario,             
+             'id_perfil' => $this->id_perfil,
+             'id_empleado' => $this->id_empleado,
+             'id_cliente' => $this->id_cliente,
+             'usuario' => $this->usuario,
+             'activo' => $this->activo,
+             'fecha_creacion' => $this->fecha_creacion, // Cambio de fecha_creacion → fecha_creacion
+             'fecha_actualizacion' => $this->fecha_actualizacion, // Cambio de fecha_actualizacion → fecha_actualizacion             
+         ];
+     }     
+
+    
+}
+
+    /*public function toArray()
+    {
+        $array = parent::toArray();  // Obtén los datos del modelo
+    
+        // Depuración: Verifica qué datos estamos recibiendo
+        Log::info('Datos originales:', $array);
+    
+        // Crear un array de la respuesta ordenada
+        $orderedArray = [];
+    
+        foreach (self::$responseOrder as $key) {
+            // Aseguramos que la clave mapeada esté en el array
+            $mappedKey = self::$map[$key] ?? Str::snake($key);
+    
+            // Depuración adicional: verificar si la clave 'activo' está presente
+            if ($mappedKey === 'activo') {
+                Log::info('Chequeando si "activo" existe en el array:', [$mappedKey => $array[$mappedKey] ?? 'No existe']);
+            }
+    
+            // Si el campo existe en el array, lo agregamos al nuevo array
+            if (isset($array[$mappedKey])) {
+                // Convertimos de snake_case a camelCase para la salida final
+                $orderedArray[Str::camel($mappedKey)] = $array[$mappedKey];
+            } else {
+                // Si el campo no existe, lo agregamos como null
+                $orderedArray[Str::camel($mappedKey)] = null;
+            }
+        }
+    
+        // Depuración: Verifica el array ordenado
+        Log::info('Array ordenado:', $orderedArray);
+    
+        return $orderedArray;  // Devuelve el array con los campos ordenados
+    }*/
+
+
+        /*
+        protected static $responseOrder = [
+            'id',
+            'id_usuario_creacion',
+            'id_usuario_actualizacion',
+            'id_tipo_usuario',
+            'id_perfil',
+            'id_empleado',
+            'usuario',
+            'clave',
+            'activo',
+            'fecha_creacion',
+            'fecha_actualizacion',
+        ];
+    
+
+           /* try {
+            $data = $request->validate([
+                'id_usuario_creacion' => 'required|integer|exists:usuarios,id',
+                'id_usuario_actualizacion' => 'nullable|integer|exists:usuarios,id',
+                'id_puesto_trabajo' => 'nullable|integer|exists:puestos_trabajo,id',
+                'nombre' => 'required|string|max:30',
+                'apellido_paterno' => 'required|string|max:30',
+                'apellido_materno' => 'nullable|string|max:30',
+                'telefono' => 'nullable|string|size:10',
+                'telefono_celular' => 'nullable|string|size:10',
+                'activo' => 'boolean',
+            ]);
+
+            $empleado = $this->empleadoService->crearEmpleado($data);
+
+            return response()->json([
+                'message' => 'Empleado creado exitosamente',
+                'empleado' => $empleado
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        }*/
+
+
+              /*  try {
+            $data = $request->validate([
+                'id_usuario_actualizacion' => 'required|integer|exists:usuarios,id',
+                'id_puesto_trabajo' => 'nullable|integer|exists:puestos_trabajo,id',
+                'nombre' => 'required|string|max:30',
+                'apellido_paterno' => 'required|string|max:30',
+                'apellido_materno' => 'nullable|string|max:30',
+                'telefono' => 'nullable|string|size:10',
+                'telefono_celular' => 'nullable|string|size:10',
+                'activo' => 'boolean',
+            ]);
+
+            $empleado = $this->empleadoService->actualizarEmpleado($id, $data);
+
+            if (!$empleado) {
+                return response()->json(['error' => 'Empleado no encontrado'], 404);
+            }
+
+            return response()->json([
+                'message' => 'Empleado actualizado exitosamente',
+                'empleado' => $empleado
+            ], 200);
+
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        }*/
+
+
+              /*  $deleted = $this->empleadoService->eliminarEmpleado($id);
+
+        if (!$deleted) {
+            return response()->json(['error' => 'Empleado no encontrado'], 404);
+        }
+
+        return response()->json(['message' => 'Empleado eliminado exitosamente'], 200);
+        */
+
+
+
+
+/*Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+Route::get('/test', function () {
+    return response()->json(['message' => 'API funcionando correctamente']);
+});
+*/
+
+
+    // Solo aplicar el middleware en la ruta de usuarios
+    /*Route::get('/usuarios', [UsuarioController::class, 'obtenerUsuarios'])
+        ->middleware(App\Http\Middleware\FormatApiGetAllResponse::class);*/
+
+
+
+        <?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class FormatApiGetAllResponse
+{
+    public function handle(Request $request, Closure $next)
+    {
+        $response = $next($request);
+
+        // Si la respuesta no es exitosa (ejemplo: error 401 "Unauthenticated"), no la modifica
+        if (!$response->isSuccessful()) {
+            return $response;
+        }
+
+        $originalData = $response->getData(true);
+
+        return response()->json([
+            'filas' => is_array($originalData) ? count($originalData) : 1,
+            'datos' => $originalData,
+        ], $response->status());
+    }
+}
+
+        /*
+        $this->app->singleton(EmpleadoService::class, function ($app) {
+            return new EmpleadoService(new NotificacionService());
+        });
+
+        */
+
+        /*$this->app->singleton(EmpleadoService::class, function ($app) {
+            return new EmpleadoService();
+        });*/
+        
+
+   /* protected static function booted()
+    {
+        static::creating(function ($usuario) {
+            // Si no se pasa el valor de 'activo', lo asignamos con el valor predeterminado 'true'
+            if (is_null($usuario->activo)) {
+                $usuario->activo = true;
+            }
+        });
+    }7*/
+
+    /*
+          protected $casts = [
+        'activo' => 'boolean',
+        'fecha_creacion' => 'datetime',
+        'fecha_actualizacion' => 'datetime',
+    ];
+     
+    */        
+
+     Documentación Mejorada (sin alterar código fuente)
+
+
+     dame el codigo completo con la documentación mejorada deja intacto el codigo fuente y ajusta los comentarios de forma concreta y clara recuerda lo que regreses debe ser funcional 
+
+     
+                 print("Yo me ejecute son Throwable Service");
+            print_r([
+                'mensaje' => $e->getMessage(),
+                'archivo' => $e->getFile(),
+                'línea' => $e->getLine(),
+                'traza' => $e->getTraceAsString(),
+                'código' => $e->getCode(),
+                'previa' => $e->getPrevious() ? $e->getPrevious()->getMessage() : null
+            ]);
+            exit;            
+            exit;    
+
+
+/*
+* ### ##    ## ##            #### ##    ####    ## ##
+* ##  ##  ##   ##           # ## ##     ##    ##   ##
+* ##  ##  ##                  ##        ##    ##
+* ##  ##  ##  ###             ##        ##    ##
+* ##  ##  ##   ##             ##        ##    ##
+* ##  ##  ##   ##             ##        ##    ##   ##
+* ### ##    ## ##             ####      ####    ## ##
+*/
+
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\UsuarioService;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use App\Helpers\LogOperacionHelper;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
+use LogSistema;
+
+class UsuarioController extends Controller
+{
+    protected $usuarioService;
+
+    public function __construct(UsuarioService $usuarioService)
+    {
+        $this->usuarioService = $usuarioService;
+    }
+
+    public function registroUsuarioCliente(Request $request)
+    {
+        try {
+            $request->validate([
+                'usuario' => 'required|string|email|max:255|unique:usuarios',
+                'clave' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'max:12',
+                    'regex:/^(?=.*[A-Z])(?=.*[\#\$\%\@\!\?]).*$/' // Al menos 1 mayúscula y 1 carácter especial
+                ],
+                'id_tipo_usuario' => 'required|integer',
+                'id_perfil' => 'required|integer|exists:perfiles,id',
+                'id_empleado' => [
+                    'nullable',
+                    'integer',
+                    'required_without:id_cliente',
+                    'prohibited_unless:id_cliente,null'
+                ],
+                'id_cliente' => [
+                    'nullable',
+                    'integer',
+                    'required_without:id_empleado',
+                    'prohibited_unless:id_empleado,null'
+                ],
+            ]);
+
+            $usuario = $this->usuarioService->registrarUsuario($request->only([
+                'id_tipo_usuario',
+                'id_perfil',
+                'id_empleado',
+                'id_cliente',
+                'usuario',
+                'clave'
+            ]));
+
+            \LogOperacion::registrar(1, 'publico', $request->all());
+
+            return $this->createdResponse($usuario, 'El usuario del cliente fue registrado con éxito');
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            Log::error("Error en registro de usuario: " . $e->getMessage());
+            return response()->json([
+                'message' => 'Error desconocido en el servidor.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function autenticar(Request $request)
+    {
+        try {
+            $request->validate([
+                'usuario' => 'required|string',
+                'clave' => 'required|string',
+            ]);
+
+            $respuesta = $this->usuarioService->autenticar($request->only('usuario', 'clave'));
+            $jsonResponse = $this->successResponse($respuesta, 'Inicio de sesión exitoso');
+
+            $idUsuario = $respuesta['idUsuario'];
+            $usuario = $request->input('usuario');
+            \LogOperacion::registrar($idUsuario, $usuario, $respuesta);
+
+            return $jsonResponse;
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            Log::error("Error en autenticación: " . $e->getMessage());
+            return $this->ErrorResponse('Error en el inicio de sesión.');
+        }
+    }
+
+
+    public function user(Request $request)
+    {
+        try {
+            $usuario = $this->usuarioService->obtenerUsuarioAutenticado();
+            return response()->json($usuario);
+        } catch (Throwable $e) {
+            Log::error("Error al obtener usuario autenticado: " . $e->getMessage());
+            return $this->ErrorResponse('Error al obtener el usuario.');
+        }
+    }
+
+
+    public function cerrarSesion(Request $request)
+    {
+        try {
+            $request->user()->tokens()->delete();
+            return $this->successResponse(null, 'Cierre de sesión exitoso');
+        } catch (Throwable $e) {
+            Log::error("Error al cerrar sesión: " . $e->getMessage());
+            return $this->ErrorResponse('Error al cerrar la sesión.');
+        }
+    }
+
+
+    public function obtenerUsuarioPorId($id)
+    {
+        try {
+            $usuario = $this->usuarioService->obtenerUsuarioPorId($id);
+            return $this->successResponse($usuario, 'Usuario encontrado.');
+        } catch (HttpException $e) {
+            LogSistema::registrar(['Paso 1' => 'Error HTTP', 'datos' => $e->getMessage()]);
+            return $this->DataBaseErrorResponse($e->getMessage(), 'Error de base de datos', $e->getStatusCode());
+        } catch (Throwable $e) {
+            Log::error("Error al obtener usuario por ID: " . $e->getMessage());
+            return $this->ErrorResponse('Error al obtener el usuario.');
+        }
+    }
+
+
+    public function listaUsuarios()
+    {
+        try {
+            $usuarios = $this->usuarioService->listaUsuarios();
+            return response()->json($usuarios, 200);
+        } catch (Throwable $e) {
+            Log::error("Error al obtener la lista de usuarios: " . $e->getMessage());
+            return $this->ErrorResponse('Error al obtener la lista de usuarios.');
+        }
+    }
+}
+
+
+\LogOperacion::registrar
+
+
+Por favor, proporciona el código completo con la documentación mejorada. Asegúrate de no modificar el código fuente; únicamente ajusta los comentarios para que sean claros, concretos y útiles. El resultado debe ser completamente funcional.
+
+
+
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use App\Repositories\EmpleadoRepositoryInterface;
+use App\Repositories\EmpleadoRepository;
+
+
+
+/*use App\Logging\BitacoraSistemaContext;
+use App\Logging\BitacoraSistemaEstrategia;
+use App\Logging\BitacoraSistemaArchivo;
+use App\Logging\BitacoraSistemaBaseDatos;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Contracts\Foundation\Application; 
+use Illuminate\Support\Facades\Log;*/
+
+
+/**
+ * Proveedor de servicios principal de la aplicación
+ *
+ * Esta clase es el punto central para registrar servicios y realizar
+ * configuraciones de bootstrap para la aplicación.
+ *
+ * Funcionalidades clave:
+ * - Registro de bindings de servicios
+ * - Configuraciones iniciales de la aplicación
+ * - Registro de listeners de eventos
+ *
+ * Ciclo de vida:
+ * 1. El método register() se ejecuta primero durante el bootstrap
+ * 2. El método boot() se ejecuta después de todos los providers están registrados
+ */
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Registra servicios en el contenedor de inyección de dependencias
+     *
+     * Este método se ejecuta antes del boot y es ideal para:
+     * - Registrar bindings de clases
+     * - Configurar singletons
+     * - Definir interfaces concretas
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+
+        $this->app->bind(EmpleadoRepositoryInterface::class, EmpleadoRepository::class);
+
+
+    /*   
+        $storageType = Config::get('bitacora_sistema.storage', 'file');
+        Log::info("Bitácora - Tipo de almacenamiento seleccionado en AppServiceProvider: " . $storageType);
+
+        $this->app->singleton(BitacoraSistemaEstrategia::class, function () use ($storageType) {
+            return match ($storageType) {
+                'database' => new BitacoraSistemaBaseDatos(),
+                default => new BitacoraSistemaArchivo(),
+            };
+        });
+
+        $this->app->singleton('log.sistema', function ($app) {
+            return new \App\Logging\BitacoraSistemaContext(
+                $app->make(\App\Logging\BitacoraSistemaEstrategia::class)
+            );
+        });
+        */
+
+        /*$this->app->singleton(BitacoraSistemaContext::class, function ($app) {
+            return new BitacoraSistemaContext($app->make(BitacoraSistemaEstrategia::class));
+        });*/
+    }
+
+    /**
+     * Inicializa servicios y configuración de la aplicación
+     *
+     * Este método se ejecuta después de que todos los providers
+     * han sido registrados y es ideal para:
+     * - Registrar listeners de eventos
+     * - Publicar assets
+     * - Realizar configuraciones iniciales
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        // Aquí se pueden registrar eventos usando Event::listen()
+    }
+}
+
+     dame el codigo completo con la documentación mejorada deja intacto el codigo fuente y ajusta los comentarios de forma concreta y clara recuerda lo que regreses debe ser funcional 
+
+
