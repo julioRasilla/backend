@@ -5,6 +5,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\TipoAsuntoController;
 
 use App\Models\Usuario;
 
@@ -58,4 +59,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/perfiles/{id}', [PerfilController::class, 'update'])->name("Actualizar un perfil");
     Route::delete('/perfiles/{id}', [PerfilController::class, 'destroy'])->name("Eliminar perfil");
 
+});
+
+// ... rutas del CRUD tipos-asuntos
+
+Route::prefix('/tipos-asunto')->group(function () {
+    Route::post('/', [TipoAsuntoController::class, 'store']);
+    Route::put('/{id}', [TipoAsuntoController::class, 'update']);
+    Route::delete('/{id}', [TipoAsuntoController::class, 'destroy']);
+    Route::get('/{id}', [TipoAsuntoController::class, 'show']);
+    Route::get('/', [TipoAsuntoController::class, 'index']);
 });
