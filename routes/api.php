@@ -6,6 +6,8 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TipoAsuntoController;
+use App\Http\Controllers\InstruccionPagoController;
+use App\Http\Controllers\PlantillaAsuntoController;
 
 use App\Models\Usuario;
 
@@ -69,4 +71,24 @@ Route::prefix('/tipos-asunto')->group(function () {
     Route::delete('/{id}', [TipoAsuntoController::class, 'destroy']);
     Route::get('/{id}', [TipoAsuntoController::class, 'show']);
     Route::get('/', [TipoAsuntoController::class, 'index']);
+});
+
+// ... rutas del CRUD instrucciones-pagos
+
+Route::prefix('instrucciones-pago')->group(function () {
+    Route::post('/', [InstruccionPagoController::class, 'store']);
+    Route::put('/{id}', [InstruccionPagoController::class, 'update']);
+    Route::delete('/{id}', [InstruccionPagoController::class, 'destroy']);
+    Route::get('/{id}', [InstruccionPagoController::class, 'show']);
+    Route::get('/', [InstruccionPagoController::class, 'index']);
+});
+
+// rutas del CRUD plantillas-asuntos
+
+Route::prefix('plantillas-asunto')->group(function () {
+    Route::post('/', [PlantillaAsuntoController::class, 'store']);
+    Route::put('/{id}', [PlantillaAsuntoController::class, 'update']);
+    Route::delete('/{id}', [PlantillaAsuntoController::class, 'destroy']);
+    Route::get('/{id}', [PlantillaAsuntoController::class, 'show']);
+    Route::get('/', [PlantillaAsuntoController::class, 'index']);
 });

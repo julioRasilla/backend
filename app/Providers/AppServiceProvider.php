@@ -51,6 +51,16 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\TipoAsuntoRepositoryInterface::class,
             \App\Repositories\TipoAsuntoRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\InstruccionPagoRepositoryInterface::class,
+            \App\Repositories\InstruccionPagoRepository::class
+        );
+
+        $this->app->bind(
+            \App\Repositories\PlantillaAsuntoRepositoryInterface::class,
+            \App\Repositories\PlantillaAsuntoRepository::class
+        );
     }
 
     /**
