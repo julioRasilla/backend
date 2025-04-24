@@ -8,6 +8,8 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TipoAsuntoController;
 use App\Http\Controllers\InstruccionPagoController;
 use App\Http\Controllers\PlantillaAsuntoController;
+use App\Http\Controllers\RecuperarClaveController;
+use App\Http\Controllers\CambiarClaveController;
 
 use App\Models\Usuario;
 
@@ -92,3 +94,8 @@ Route::prefix('plantillas-asunto')->group(function () {
     Route::get('/{id}', [PlantillaAsuntoController::class, 'show']);
     Route::get('/', [PlantillaAsuntoController::class, 'index']);
 });
+
+// rutas para la recuperacion de contraseña
+
+Route::post('/recuperar-clave', RecuperarClaveController::class);
+Route::post('/cambiar-clave', CambiarClaveController::class);

@@ -32,7 +32,7 @@ class TipoAsuntoController extends Controller
     {
         try {
             $this->tipoAsuntoService->update($id, $request->validated());
-            return $this->updateResponse();
+            return $this->updateResponse(new TipoAsuntoResource($tipoAsunto), 'El tipo de asunto fue actualizado con éxito');
         } catch (Throwable $e) {
             return $this->handleErrors($e, 'Actualización de tipo de asunto');
         }
